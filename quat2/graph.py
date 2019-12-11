@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# map.py
+# graph.py
 #
 
 #optional to initialize Graph class
@@ -7,8 +7,7 @@
 
 class Graph:
     """A graph data structure defining how rooms are connected.
-    'Room' corresponds to the concept of a node, arcs are one-way paths,
-    edges are two-way paths."""
+    Arcs are one-way paths, edges are two-way paths."""
     
     def __init__(self, gdict = None):
         if gdict == None:
@@ -18,7 +17,7 @@ class Graph:
     def show(self):
         print(self.g)
         
-    def add_room(self, id):
+    def add_node(self, id):
         if not id in self.g:
             print("adding {}".format(id))
             self.g.update({ id : [] })
@@ -26,7 +25,7 @@ class Graph:
             print("Error: Room {} already exists".format(id))
             return
     
-    def del_room(self, id):
+    def del_node(self, id):
         if id in self.g:
             del self.g[id]
         else:
@@ -44,3 +43,5 @@ class Graph:
             self.g[a].remove(b)
         else:
             print("Error: Can't remove arc from {} to {}".format(a, b))
+
+
