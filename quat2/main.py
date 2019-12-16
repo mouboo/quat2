@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 # main.py
 
-#import graph
-import rooms
+import setup_world
 import persons
 import parser
-import setup_world
 
 
 def run():
     
-    player = persons.Player('joe', rooms.A)
-#    room = rooms.A
+    roomset = setup_world.roomset
+    player = persons.Player('joe', setup_world.startroom)
 
     while True:
         user_input = input('> ')
@@ -19,4 +17,5 @@ def run():
         
         
 run()
+
     

@@ -45,3 +45,8 @@ class Graph:
             print("Error: Can't remove arc from {} to {}".format(a, b))
 
 
+s = """import textwrap
+desc = 'The town square is a large open space with a fountain in the center. Streets lead in all directions.'
+
+for line in textwrap.wrap(desc, 80):
+    print(line)"""

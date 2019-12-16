@@ -2,37 +2,35 @@
 
 import actions
 
-
 def parse_cmd(phrase, player):
     """ Main parsing function. Takes a user input string and executes a command.
         For now: commands must be on the form verb + noun"""
     
     p = player
     r = player.current_room
-    
+
     cmd = lex(phrase)
     print("After lex: {}".format(cmd))
+    print(cmd[:1])
+    print(cmd[1:])
     
     if not cmd:
         print('No known words.')
         return
     
-    if cmd[0] == 'go':
-        actions.go(cmd[1])
-    
-    elif cmd[0] == 'h':
-        s = "help"
-    
+    if cmd[0] in 'go':
+        
+        print("You go to {}".format(cmd[1]))
+            
     elif cmd[0] == 'whoami':
         s = p.name
     
     elif cmd[0] == 'look':
-        s = p.current_room.name
+        print(p.current_room.name)
+        print('exits: {}'.format(r.exits))
     
     elif cmd[0] == 'inventory':
-        s = ''
-        for item in p.inventory:
-            s += item + ', '
+        pass
     
     else:
         s = "Invalid command."
@@ -45,8 +43,12 @@ def lex(phrase):
     c = [word for word in phrase.split() if word in known_words]
     return c
 
+synonyms = { 'go': ['g','walk','travel'],
+             'look': ['l','examine','investigate','see']
+            }
+
 # (test words for now)
-verbs = ['go', 'look', 'help', 'inventory', 'q', 'h', 'whoami']
+verbs = ['go', 'look', 'help', 'inventory', 'q', 'h', 'whoami', 'help']
 nouns = ['book', 'room', 'dagger', 'bag']
 preps = ['in','to','on','at']
 rooms = ['bridge','north','kitchen'] # TODO: generate list from graph and alt. desc.
