@@ -12,8 +12,8 @@ def run():
     player = persons.Player('joe', setup_world.startroom)
 
     while True:
-        user_input = input('> ')
-        parser.parse_cmd(user_input, player)
+        phrase = input('> ')
+        parser.parse(phrase, player)
         
         
 run()

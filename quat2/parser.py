@@ -2,83 +2,65 @@
 
 import actions
 
-def parse_cmd(phrase, player):
-    """ Main parsing function. Takes a user input string and executes a command.
-        For now: commands must be on the form verb + noun"""
-    
-    p = player
-    r = player.current_room
+### Words
 
-    cmd = lex(phrase)
-    print("After lex: {}".format(cmd))
-#    print(cmd[:1])
-#    print(cmd[1:])
+verbs = ['go', 'take', 'look', 'help', 'inventory', 'q', 'h', 'whoami', 'help', 'put on', 'put']
+#nouns = ['book', 'room', 'dagger', 'green bag', 'red rum','blue shirt']
+preps = ['in','to','on','at']
+
+def parse(phrase, player):
+    """Takes a user input string and executes a command. """
+
+    exits = [e.name.lower() for e in player.current_room.exits]
+    inventory = [i.name.lower() for i in player.inventory]
+    room_items = [ri.name.lower() for ri in player.current_room.items]
+    known_words = verbs + preps + exits + inventory + room_items
     
-    if not cmd:
-        print('No known words.')
-        return
-    
-    if cmd[0] in 'go':
-        
-        print("You go to {}".format(cmd[1]))
-            
-    elif cmd[0] == 'whoami':
-        s = p.name
-    
-    elif cmd[0] == 'look':
-        print(p.current_room.name)
-        print('exits: {}'.format(r.exits))
-    
-    elif cmd[0] == 'inventory':
-        pass
-    
-    else:
-        s = "Invalid command."
-        print(s)
+    print("Inventory: {}".format(inventory))
+    print("Room items: {}".format(room_items))
+    print("Exits: {}".format(exits))
 
 
-def lex(phrase):
-    """ Takes an input phrase and returns a list of known words/group of words"""
     #Convert phrase to lower case
     phrase = phrase.lower()
     
     #Split string on whitespace into list of words
-    raw_c = [word for word in phrase.split()]
-    
-    #Discard leading words that aren't a known verb
-#    while not raw_c[0] in verbs:
-#        del raw_c[0]
-        
-    #Check if there are more verbs, deal with error
-#    vs = [v for v in raw_c if v in verbs]
-#    if not len(vs) == 1:
-#            print("Error: More than one verb/action")
-#            return raw_c
+    raw_p = [word for word in phrase.split()]
             
     #Check if compound verb and nouns, replace in list
-    for i in range(0,len(raw_c)-1):
-        for j in range(0,len(raw_c)-1-i):
-            compound = raw_c[i:len(raw_c)-j]
+    for i in range(0,len(raw_p)-1):
+        for j in range(0,len(raw_p)-1-i):
+            compound = raw_p[i:len(raw_p)-j]
             c = ' '.join(compound)
             if c in known_words:
-                raw_c.insert(i,c)
+                raw_p.insert(i,c)
                 for k in range(1,len(compound)+1):
-                    del raw_c[i+1]
+                    del raw_p[i+1]
                     
     #Remove unknown words
-    known_c = [c for c in raw_c if c in known_words]
+    cmd = [word for word in raw_p if word in known_words]
     
-    return known_c
+    # Analyze grammar: v=verb, n=noun, p=preposition, e=exit
+    grammar = []
+    for w in cmd:
+        if w in verbs:
+            grammar.append('v')
+        elif w in inventory or w in room_items:
+            grammar.append('n')
+        elif w in preps:
+            grammar.append('p')
+        elif w in exits:
+            grammar.append('e')
+        else:
+            print('Error: {} did not match a grammatic category'.format(w))
+            
+    #TODO: Bind cmd words to functions and objects
+    
+    print("Command components: {}".format(cmd))
+    print("Grammar: {}".format(grammar))
 
 
-synonyms = { 'go': ['g','walk','travel'],
-             'look': ['l','examine','investigate','see']
-            }
 
-# (test words for now)
-verbs = ['go', 'take', 'look', 'help', 'inventory', 'q', 'h', 'whoami', 'help', 'put on']
-nouns = ['book', 'room', 'dagger', 'green bag', 'red rum','blue shirt']
-preps = ['in','to','on','at']
-rooms = ['bridge','north','kitchen'] # TODO: generate list from graph and alt. desc.
-known_words = verbs + nouns + preps + rooms
+
+
 

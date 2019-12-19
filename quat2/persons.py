@@ -1,5 +1,7 @@
 #persons.py
 
+import items
+
 class Person:
     def __init__(self, name, current_room):
         self.name = name
@@ -10,7 +12,7 @@ class Person:
 class Player(Person):
     def __init__(self, name, current_room):
         super().__init__(name, current_room)
-        self.inventory = ["stuff","more stuff"]
+        self.inventory = [items.Item('book')]
     
     def go(args):
         if args in self.currentroom.exits:
