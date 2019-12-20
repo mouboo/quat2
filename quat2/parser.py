@@ -1,25 +1,47 @@
 # parser.py
 
+import itertools
 import actions
+
 
 ### Words
 
-verbs = ['go', 'take', 'look', 'help', 'inventory', 'q', 'h', 'whoami', 'help', 'put on', 'put']
-#nouns = ['book', 'room', 'dagger', 'green bag', 'red rum','blue shirt']
+verbdict = {'go' : ['walk', 'move'],
+             'take' : ['get','grab'],
+             'wear' : ['put on']
+            }
 preps = ['in','to','on','at']
 
 def parse(phrase, player):
     """Takes a user input string and executes a command. """
 
-    exits = [e.name.lower() for e in player.current_room.exits]
-    inventory = [i.name.lower() for i in player.inventory]
-    room_items = [ri.name.lower() for ri in player.current_room.items]
-    known_words = verbs + preps + exits + inventory + room_items
+    #Make a list of all known synonyms for all available actions,items, and rooms
+    verbs = []
+    for v in verbdict:
+        verbs.append(v)
+        verbs += verbdict[v]
     
-    print("Inventory: {}".format(inventory))
-    print("Room items: {}".format(room_items))
-    print("Exits: {}".format(exits))
+    inventory = []
+    for i in player.inventory:
+        inventory.append(i.name)
+        inventory.extend(i.synonyms)
+    
+    room_items = []
+    for r in player.current_room.items:
+        room_items.append(r.name)
+        room_items.extend(r.synonyms)
 
+    exits = []
+    for e in player.current_room.exits.values():
+        exits.extend(e)
+    
+    known_words = verbs + preps + inventory + room_items + exits
+    
+    #print("Verbs: {}".format(verbs))
+    #print("Prepositions: {}".format(preps))
+    #print("Inventory: {}".format(inventory))
+    #print("Room items: {}".format(room_items))
+    #print("Exits: {}".format(exits))
 
     #Convert phrase to lower case
     phrase = phrase.lower()
@@ -55,11 +77,13 @@ def parse(phrase, player):
             print('Error: {} did not match a grammatic category'.format(w))
             
     #TODO: Bind cmd words to functions and objects
+    #Deal with synonyms
     
     print("Command components: {}".format(cmd))
     print("Grammar: {}".format(grammar))
 
 
+    
 
 
 

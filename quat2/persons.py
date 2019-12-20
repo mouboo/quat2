@@ -12,7 +12,9 @@ class Person:
 class Player(Person):
     def __init__(self, name, current_room):
         super().__init__(name, current_room)
-        self.inventory = [items.Item('book')]
+        self.inventory = [items.Book('red book'),
+                          items.Dagger('obsidian dagger'),
+                          items.Dagger('silver dagger')]
     
     def go(args):
         if args in self.currentroom.exits:

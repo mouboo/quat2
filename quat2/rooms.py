@@ -1,11 +1,12 @@
 # rooms.py
 
 class Room:
-    def __init__(self, name, desc='Not yet described.', items=[], exits=[]):
+    def __init__(self, name, desc='Not yet described.'):
         self.name = name
+        self.synonyms = []
         self.desc = desc
-        self.items = items
-        self.exits = exits
+        self.items = []
+        self.exits = []
 
     
     def displaytext(self):
@@ -18,7 +19,6 @@ class Room:
         for i in items:
             print(i + ' ', end='')
 
-    
     def __str__(self):
         return self.name
         
