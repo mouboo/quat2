@@ -77,10 +77,24 @@ def parse(phrase, player):
             print('Error: {} did not match a grammatic category'.format(w))
             
     #TODO: Bind cmd words to functions and objects
-    #Deal with synonyms
-    
-    print("Command components: {}".format(cmd))
+    print("Command components before binding: {}".format(cmd))
     print("Grammar: {}".format(grammar))
+    
+    #TODO: Sanity checks: One verb. Non-ambiguous.
+    
+    if not grammar.count('v'):
+        print("Error: multiple verbs")
+    
+    
+    for i in range(0,len(cmd)):
+        print("{}-{}-{}".format(i,cmd[i],grammar[i]))
+        if grammar[i] = 'n':
+            pass
+            
+    
+    
+    print("Command components after binding: {}".format(cmd))
+
 
 
     
