@@ -7,8 +7,9 @@ import actions
 ### Words
 
 verbdict = {'go' : ['walk', 'move'],
-             'take' : ['get','grab'],
-             'wear' : ['put on']
+            'take' : ['get','grab'],
+            'wear' : ['put on'],
+            'look' : ['examine']
             }
 preps = ['in','to','on','at']
 
@@ -76,24 +77,51 @@ def parse(phrase, player):
         else:
             print('Error: {} did not match a grammatic category'.format(w))
             
-    #TODO: Bind cmd words to functions and objects
     print("Command components before binding: {}".format(cmd))
     print("Grammar: {}".format(grammar))
     
-    #TODO: Sanity checks: One verb. Non-ambiguous.
+    #TODO: Sanity checks: One verb, determines function.
     
     if not grammar.count('v'):
         print("Error: multiple verbs")
+        return
     
-    
-    for i in range(0,len(cmd)):
-        print("{}-{}-{}".format(i,cmd[i],grammar[i]))
-        if grammar[i] = 'n':
-            pass
-            
-    
-    
-    print("Command components after binding: {}".format(cmd))
+    if not grammar[0] == 'v':
+        print("Error: verb not first")
+        return
+
+    #Go
+    if cmd[0] == 'go' or cmd[0] in verbdict['go']:
+        if 'e' in grammar:
+            e_pos = grammar.index('e')
+            print("Exit: {}".format(cmd[e_pos]))
+
+        else:
+            print("Error: no exit found")
+        for x in player.current_room.exits:
+            print(x)
+        print("Current room: {}".format(player.current_room.name))
+                
+
+    #Look
+    if cmd[0] == 'look' or cmd[0] in verbdict['look']:
+        #TODO: deal with prepositions
+        if len(cmd) == 1:
+            player.look(player.current_room)
+        elif len(cmd) == 2 and grammar[1] == 'n':
+            word = cmd[1]
+            matches = []
+            for m in player.current_room.items + player.inventory:
+                if cmd[1] == m.name or cmd[1] in m.synonyms:
+                    matches.append(m)
+            if len(matches) == 0:
+                print("Don't know how to look at {}".format(cmd[1]))
+            elif len(matches) > 1:
+                print("Which {}?".format(cmd[1]))
+            elif len(matches) == 1:
+                player.look(matches[0])
+
+
 
 
 

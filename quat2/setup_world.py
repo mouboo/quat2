@@ -9,6 +9,7 @@ A = rooms.Room('Testroom A')
 
 #Room B
 B = rooms.Room('Testroom B')
+B.desc = 'Testroom B is kind of an empty test room.'
 B.items = [items.Dagger('rusty dagger'), items.Ring("white gold ring")]
 
 #Room C

@@ -12,12 +12,15 @@ class Room:
     def displaytext(self):
         print(self.name)
         print(self.desc)
-        itemstext()
+        self.itemstext()
         
     def itemstext(self):
+        #print("items: {}".format(self.items))
         print('You see: ', end='')
-        for i in items:
-            print(i + ' ', end='')
+        for i in self.items:
+            print(i, end =', ')
+        print()
+        
 
     def __str__(self):
         return self.name

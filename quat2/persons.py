@@ -23,8 +23,8 @@ class Player(Person):
         else:
             print("error: can't go to {}".format(args))
     
-    def look(args):
-        args.displaytext()
+    def look(self, x):
+        x.displaytext()
 
 
 
